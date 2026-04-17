@@ -1,191 +1,228 @@
-Chapter # 1
-1. dir.py
+Chapter # 2
+1. Thread_definition.py
 What I learned:
-I learned basic of if else and list and for loop
+I learned the most basic way to define and launch threads by passing a target function and arguments to the Thread constructor.
 
 How to execute:
-Run in cmd : Python dir.py to see how python differentiate between +ve, -ve and zero and also to see the sum of the lists.
+Run in cmd: python Thread_definition.py to see 10 threads call the same function and print their assigned numbers.
 
 Use cases:
-Basic data validation and simple mathematical transformations of list-based data sets.
+Quick, simple background tasks that don't require complex object-oriented logic or custom data.
 
 Requirements for execution:
-A standard Python installation, no external modules or libraries are necessary.
+The threading module and the target and args parameters.
 
 Advantages:
-Extremely lightweight and fast; it demonstrates the core foundation of almost every functional Python script.
+The fastest way to implement threading with very little code; excellent for simple parallelization.
 
 Disadvantages:
-The logic is static; if you want to check different numbers, you must manually edit the script or use input.
+Harder to manage thread-specific state compared to inheriting from the Thread class.
 
-2. lists.py
+2. MyThreadClass.py
 What I learned:
-I learned the differences between mutable lists, unchangeable tuples, and key-value pairs in dictionaries.
+I learned how to create a custom thread by inheriting from the threading.Thread class and overriding the run() method.
 
 How to execute:
-Run in cmd: python lists.py to see how to access and modify items in a list and how to update values in a dictionary.
+Run in cmd: python MyThreadClass.py to spawn nine custom threads that run and sleep for random durations independently.
 
 Use cases:
-Storing collections of data, mapping unique keys to values (like a dictionary), and grouping related items together.
+Encapsulating complex thread logic into an object-oriented structure for cleaner, more maintainable code.
 
 Requirements for execution:
-Standard Python installation; utilizes built-in data structures without needing imports.
+Defining a class that inherits from Thread and calling the __init__ of the parent class.
 
 Advantages:
-Highly flexible; lists can hold different data types at once, and dictionaries offer extremely fast data retrieval.
+Allows you to attach specific data (like name and duration) directly to the thread object for easier management.
 
 Disadvantages:
-Tuples cannot be modified after creation, which can be restrictive if the data needs to change.
+Requires more boilerplate code compared to just passing a simple function to a standard Thread object.
 
-3. do_something.py
+3. Thread_determine.py
 What I learned:
-I learned how to create a reusable helper function that utilizes the random module to populate a list with decimal numbers.
+I learned how to name threads and identify them during execution using threading.currentThread().getName().
 
 How to execute:
-This file is a module; it is executed by being imported into other scripts like serial_test.py or multiprocessing_test.py using **from do_something import ***.
+Run in cmd: python Thread_determine.py to see three different functions start and exit, identifying themselves by name.
 
 Use cases:
-Generating large datasets for performance testing, simulations, or any task requiring a high volume of random data.
+Logging and debugging complex multi-threaded apps where you need to know exactly which thread produced a specific error or log.
 
 Requirements for execution:
-The Python random module (built-in) and another script to call the function.
+The name attribute in the Thread constructor and the currentThread() function.
 
 Advantages:
-Follows the "Don't Repeat Yourself" (DRY) principle by keeping specific logic in a single, manageable file.
+Makes terminal output much more readable; you can tell "Function_A" from "Function_B" immediately.
 
 Disadvantages:
-It does not perform any action when run by itself; it strictly acts as a dependency for other programs.
+Names are for human readability only; they do not change how the Python interpreter handles the thread logic.
 
-4. flow.py
+4. MyThreadClass_lock.py
 What I learned:
-I learned three core control flow tools: if/elif/else for logic, for loops for lists, and while loops for conditional repetition.
+I learned how to use a threading.Lock to enforce "Mutual Exclusion," ensuring only one thread can access a code block at a time.
 
 How to execute:
-Run in cmd: python flow.py to see the results of logical checks and two different ways to calculate numerical sums.
+Run in cmd: python MyThreadClass_lock.py; notice that threads now finish one by one in order because they must wait for the lock.
 
 Use cases:
-Automation scripts, data filtering, and creating loops that run until a specific goal or condition is reached.
+Protecting shared data (like a bank balance or a shared file) from being modified by two threads at the exact same time.
 
 Requirements for execution:
-Proper indentation of code blocks, which is required for Python to identify the scope of loops and conditions.
+A global threading.Lock() object and the use of acquire() and release() around critical code.
 
 Advantages:
-Comprehensive; it covers all the primary ways to control the "flow" or direction of a program's execution.
+Completely prevents data corruption by ensuring that only one "worker" is in the sensitive area of the code at once.
 
 Disadvantages:
-while loops can cause the program to hang in an "infinite loop" if the counter variable is not updated correctly.
+Significantly slows down the program because it turns parallel execution back into sequential execution while the lock is held.
 
-5. classes.py
+5. MyThreadClass_lock_2.py
 What I learned:
-I learned how to create classes, use the __init__ constructor, and the difference between shared class variables and instance-specific variables.
+I learned how to minimize the "Critical Section" by acquiring and releasing a lock only for the specific line of code that needs protection, rather than the entire function.
 
 How to execute:
-Run in cmd: python classes.py to see how modifying a class-level variable affects all objects, while instance variables remain unique to each one.
+Run in cmd: python MyThreadClass_lock_2.py to see how threads print their start message one-by-one but then sleep simultaneously, making the overall execution faster than a full lock.
 
 Use cases:
-Building structured applications like student databases, banking systems, or any program that models real-world objects through inheritance.
+Optimizing performance in multi-threaded apps where only a small part of a task (like updating a counter) needs to be synchronized.
 
 Requirements for execution:
-A standard Python installation and an understanding of the self argument used within class methods.
+A threading.Lock() object and the strategic placement of acquire() and release() calls within the run() method.
 
 Advantages:
-Promotes code reusability and organization; inheritance allows a new class to take on the properties of an existing one.
+Increases efficiency by allowing threads to perform non-sensitive work (like time.sleep) in parallel while still protecting shared resources.
 
 Disadvantages:
-Can become complex and harder to debug as the hierarchy of inherited classes grows deeper.
+If the lock is released too early, you risk data corruption if another thread modifies the data while the first thread is still processing it.
 
-6. file.py
+6. Rlock.py
 What I learned:
-I learned the basics of file I/O, specifically how to open, write text to, close, and read back from a .txt file.
+I learned about the "Reentrant Lock" (RLock), which allows the same thread to acquire the lock multiple times without causing a deadlock.
 
 How to execute:
-Run in cmd: python file.py to generate a file named test.txt and see its contents printed to the console.
+Run in cmd: python Rlock.py to see an adder and remover modify a Box object that uses nested locked methods.
 
 Use cases:
-Saving user logs, storing configuration settings, or exporting reports and data for later use.
+Complex objects where one locked method calls another locked method within the same class.
 
 Requirements for execution:
-Standard file system write permissions and the built-in open() function.
+Replacing a standard Lock with threading.RLock() when recursive or nested locking is needed.
 
 Advantages:
-Provides data persistence, meaning your data is saved on the hard drive even after the program is closed.
+Prevents a thread from "locking itself out" when calling its own synchronized methods.
 
 Disadvantages:
-Using the 'w' mode overwrites the file every time the script runs, which can lead to accidental data loss.
+Slightly more overhead than a regular lock; it should only be used when reentrancy is actually required.
 
-7. serial_test.py
+7. Semaphore.py
 What I learned:
-I learned how to measure the execution time of a task when it is performed sequentially (one after the other).
+I learned how to use a Semaphore to manage access based on a counter, allowing a specific number of threads to pass.
 
 How to execute:
-Run in cmd: python serial_test.py to execute the random number task 10 times in a single sequence.
+Run in cmd: python Semaphore.py to see a consumer wait for a producer to "release" a permit before it can display the item.
 
 Use cases:
-Baseline performance testing or simple scripts where tasks must be completed in a specific, linear order.
+Limiting connections to a database, controlling how many users can download a file at once, or managing a pool of resources.
 
 Requirements for execution:
-The time module for benchmarking and the do_something.py file located in the same folder.
+threading.Semaphore(value) where value is the number of concurrent permits allowed.
 
 Advantages:
-The logic is straightforward and easy to debug because only one thing happens at a time.
+Much more flexible than a Lock because it can allow multiple threads (e.g., 3 or 5) instead of just one.
 
 Disadvantages:
-Very slow for heavy workloads as it only uses one CPU core, leaving the rest of the processor's power idle.
+More difficult to debug; if a thread forgets to release(), a permit is lost forever, potentially causing a system hang.
 
-8. multiprocessing_test.py
+8. Barrier.py
 What I learned:
-I learned how to use the multiprocessing module to run tasks on separate CPU cores for true parallelism.
+I learned how to use a Barrier to synchronize multiple threads, ensuring that all threads reach a specific point in execution before any of them can proceed.
 
 How to execute:
-Run in cmd: python multiprocessing_test.py to see the performance difference when the CPU handles 10 tasks at once on 10 cores.
+Run in cmd: python Barrier.py to see three "runners" reach the barrier at different times and only finish the race once the last one arrives.
 
 Use cases:
-CPU-intensive tasks like image processing, heavy data analysis, or complex mathematical simulations.
+Simulating a race, parallel computing where a phase must finish before the next starts, or multi-player game lobby "ready" checks.
 
 Requirements for execution:
-The if __name__ == "__main__": block to safely manage process creation on different operating systems.
+The threading.Barrier object initialized with the exact number of threads that must wait for each other.
 
 Advantages:
-Bypasses the GIL, allowing the program to run significantly faster by using all available CPU power.
+Prevents "race conditions" where one part of a program starts too early; very simple to implement for fixed-party synchronization.
 
 Disadvantages:
-Higher memory (RAM) usage because each process creates its own independent memory space.
+If one thread fails or crashes before reaching the barrier, all other threads will wait indefinitely (deadlock).
 
-9. multithreading_test.py
+9. Condition.py
 What I learned:
-I learned how to use the threading module to attempt running multiple tasks simultaneously within the same memory space.
+I learned how to use a Condition object to allow threads to wait for specific state changes, effectively managing Producer-Consumer relationships.
 
 How to execute:
-Run in cmd: python multithreading_test.py to see 10 threads start and process data at the same time.
+Run in cmd: python Condition.py to observe a Producer adding items and a Consumer waiting until items are available before removing them.
 
 Use cases:
-Tasks involving waiting (I/O bound), such as downloading multiple files, web scraping, or keeping a user interface responsive.
+Inventory management systems, task queues, or any scenario where a thread depends on a specific variable value to proceed.
 
 Requirements for execution:
-The threading library and the use of .start() and .join() to manage the thread lifecycle.
+The threading.Condition object and the use of wait() and notify() methods within a with statement.
 
 Advantages:
-Threads are "lightweight" and share memory, making them efficient for tasks that don't require heavy CPU calculation.
+More efficient than a basic lock because it allows threads to "sleep" and consume zero CPU power while waiting for a notification.
 
 Disadvantages:
-Due to Python's Global Interpreter Lock (GIL), it does not provide true parallelism for CPU-heavy math tasks.
+Can lead to complex logic bugs if notify() is called at the wrong time or if wait() is not checked within a loop.
 
-10. thread_and_processes.py
+10. Event.py
 What I learned:
-I learned how to compare the performance of threading and multiprocessing side-by-side within a single script.
+I learned how to use an Event to communicate between threads using a simple internal "true/false" flag.
 
 How to execute:
-Run in cmd: python thread_and_processes.py to see a direct time comparison between the two different concurrency methods.
+Run in cmd: python Event.py to see a consumer thread stop and wait until a producer "sets" the event signal.
 
 Use cases:
-Performance benchmarking and determining which execution method is best for a specific type of workload.
+Starting multiple background services at once, stopping threads gracefully, or signaling that a setup process is complete.
 
 Requirements for execution:
-Importing both threading and multiprocessing modules and sufficient system resources to handle the heavy load.
+The threading.Event object and the set(), clear(), and wait() methods.
 
 Advantages:
-Provides a clear, empirical view of how different system architectures (threads vs processes) handle the same data.
+One of the simplest ways for one thread to signal "GO" or "STOP" to many other threads simultaneously.
 
 Disadvantages:
-The script is resource-heavy because it runs a massive workload twice (once for each method).
+It is a "binary" signal; it cannot pass data (like a message) between threads, only the fact that an event occurred.
 
+11. Thread_name_and_processes.py
+What I learned:
+I learned how to verify that all threads created within a script belong to the same Process ID (PID), confirming that threading happens within a single process.
+
+How to execute:
+Run in cmd: python Thread_name_and_processes.py to see different thread names printed alongside the OS process ID they are running under.
+
+Use cases:
+System monitoring and debugging to ensure that your application is not accidentally spawning heavy new processes when you only intended to use light threads.
+
+Requirements for execution:
+The os module to fetch the process ID and a custom thread class to print the identification data.
+
+Advantages:
+Provides technical proof of how the operating system handles Python threads versus processes.
+
+Disadvantages:
+Since it focuses on identification rather than logic, this script doesn't perform any actual data processing.
+
+12. Threading_with_queue.py
+What I learned:
+I learned how to use a Queue for thread-safe communication, allowing Producers to send data to multiple Consumers without manually managing locks.
+
+How to execute:
+Run in cmd: python Threading_with_queue.py to watch one Producer add random items to a queue while three Consumers compete to pull and process them.
+
+Use cases:
+Handling background tasks like email sending, processing web requests, or any system where tasks are produced faster than they can be finished.
+
+Requirements for execution:
+The queue.Queue object and the use of put() for producers and get() followed by task_done() for consumers.
+
+Advantages:
+Queues are inherently thread-safe; they automatically handle the locking logic for you, making your code much cleaner and less prone to errors.
+
+Disadvantages:
+If consumers are slower than the producer, the queue will grow indefinitely and may eventually consume all available system memory.
